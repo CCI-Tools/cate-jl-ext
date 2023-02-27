@@ -1,0 +1,8 @@
+{
+  "jupyter.lab.shortcuts": [],
+  "title": "cate-jl-ext",
+  "description": "cate-jl-ext settings.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}
