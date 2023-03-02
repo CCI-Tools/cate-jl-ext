@@ -28,7 +28,7 @@ export interface ServerStatus {
     response: any;
 }
 
-export function getViewerUrl(serverUrl: string) {
+export function getUiUrl(serverUrl: string) {
     return `${CATE_APP_URL}?serverUrl=${serverUrl}`;
 }
 
@@ -94,6 +94,7 @@ function assertServerStateOk(serverState: ServerState) {
     if (typeof serverState.returncode === "number") {
         message += `Exit code ${serverState.returncode}. `;
     }
+    // noinspection SuspiciousTypeOfGuard
     if (typeof serverState.status === "string") {
         message += `Status: ${serverState.status}. `;
     }

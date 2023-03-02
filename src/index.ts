@@ -5,7 +5,7 @@ import { ISettingRegistry } from "@jupyterlab/settingregistry";
 import { ServerConnection } from '@jupyterlab/services';
 import { ICommandPalette, MainAreaWidget, showErrorMessage, WidgetTracker } from "@jupyterlab/apputils";
 import { Widget } from "@lumino/widgets";
-import { getServer, getViewerUrl, ServerStatus, setLabInfo } from './api';
+import { getServer, getUiUrl, ServerStatus, setLabInfo } from './api';
 
 
 const ERROR_BOX_TITLE = "Cate JupyterLab Extension";
@@ -89,7 +89,7 @@ async function activate(
                 iframe.style.height = "100%";
                 iframe.style.border = "none";
                 // iframe.src = "https://viewer.earthsystemdatalab.net/";
-                iframe.src = getViewerUrl(serverUrl);
+                iframe.src = getUiUrl(serverUrl);
                 content.node.appendChild(iframe);
 
                 widget = new MainAreaWidget({content});

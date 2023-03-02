@@ -3,13 +3,25 @@
 [![Github Actions Status](https://github.com/github_username/cate-jl-ext/workflows/Build/badge.svg)](https://github.com/github_username/cate-jl-ext/actions/workflows/build.yml)
 Cate JupyterLab extension
 
-This extension is composed of a Python package named `cate_jl_ext`
+This extension allows running Cate App within JupyterLab.
+
+The extension is composed of a Python package named `cate_jl_ext`
 for the server extension and a NPM package named `cate-jl-ext`
 for the frontend extension.
+
+
+---
+**NOTE** 
+
+This extension is still experimental and has neither been packaged 
+nor deployed. Refer to the section **Development** below for dev installs.
+
+---
 
 ## Requirements
 
 - JupyterLab >= 3.0
+- cate >= 3.1.4
 
 ## Install
 
@@ -42,6 +54,109 @@ the frontend extension, check the frontend extension is installed:
 ```bash
 jupyter labextension list
 ```
+
+## Development
+
+### Setup environment
+
+Make sure to have a source installation of 
+[cate](https://github.com/CCI-Tools/cate) in a dedicated Python 
+environment. 
+
+```bash
+cd ${projects}
+git clone https://github.com/CCI-Tools/cate.git
+cd cate
+mamba env create
+```
+
+Activate `cate` environment and install cate in editable (development) mode:
+
+```bash
+conda activate cate
+pip install -ve .
+```
+
+Update environment with required packages for building and running
+the JupyterLab extension.
+
+Note, the version of the `jupyterlab` in our development environment 
+should match the version of the target system. We also install
+`jupyter-server-proxy`.
+
+```bash
+mamba install -c conda-forge -c nodefaults jupyterlab=3.4.0 jupyter-server-proxy
+```
+
+Also install some packaging and build tools:
+
+```bash
+mamba install -c conda-forge -c nodefaults nodejs jupyter-packaging
+pip install build
+```
+
+Refer also to the [JupyterLab Extension Tutorial](https://jupyterlab.readthedocs.io/en/stable/extension/extension_tutorial.html)
+for the use these tools.
+
+### Install extension from sources
+
+Make sure, `xcube` environment is active:
+
+```bash
+conda activate xcube
+```
+
+Clone xcube JupyterLab extension repository next to the `xcube` source
+folder:
+
+```bash
+cd ${projects}
+git clone https://github.com/dcs4cop/xcube-jl-ext.git
+cd xcube-jl-ext
+```
+
+Install the initial project dependencies and install the extension into 
+the JupyterLab environment. Copy the frontend part of the extension into 
+JupyterLab. We can run this pip install command again every time we make 
+a change to copy the change into JupyterLab.
+
+```bash
+pip install -ve .
+```
+
+Create a symbolic link from JupyterLab to our source directory. 
+This means our changes are automatically available in JupyterLab:
+
+```bash
+jupyter labextension develop --overwrite .
+```
+
+If successful, we can run JupyterLab and check if the extension
+works as expected:
+
+```bash
+jupyter lab
+```
+
+### Build after changes
+
+Run the following to rebuild the extension. This will be required
+after any changes of `package.json` or changes of frontend TypeScript 
+files and other resources.
+
+```bash
+jlpm run build
+```
+
+If you wish to avoid building after each change, you can run the 
+
+```bash
+jlpm run watch
+```
+
+from your extension directory in another terminal. 
+This will automatically compile the TypeScript files as they 
+are changed and saved.
 
 ## Contributing
 
