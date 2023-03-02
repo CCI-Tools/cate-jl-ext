@@ -56,10 +56,11 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@jupyterlab/application": "^3.1.0",
-    "@jupyterlab/settingregistry": "^3.1.0",
-    "@jupyterlab/coreutils": "^5.1.0",
-    "@jupyterlab/services": "^6.1.0"
+    "@jupyterlab/application": "^3.6.1",
+    "@jupyterlab/settingregistry": "^3.6.1",
+    "@jupyterlab/coreutils": "^5.6.1",
+    "@jupyterlab/launcher": "^3.6.1",
+    "@jupyterlab/services": "^6.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

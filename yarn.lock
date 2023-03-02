@@ -1293,7 +1293,7 @@
     y-protocols "^1.0.5"
     yjs "^13.5.40"
 
-"@jupyterlab/application@^3.1.0":
+"@jupyterlab/application@^3.6.1":
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/@jupyterlab/application/-/application-3.6.1.tgz#41b897a809847fcd9426fe12ab0415c4373d24ed"
   integrity sha512-EpZ5pByXqiNwX9Kj6H5UepYJ9nNI3uU0ule7vCHhLmvJTM9+ARUKT9a52qp2uAyZSjdihl1cHfVKONEM9Xn8fA==
@@ -1473,7 +1473,7 @@
     react "^17.0.1"
     y-codemirror "^3.0.1"
 
-"@jupyterlab/coreutils@^5.1.0", "@jupyterlab/coreutils@^5.6.1":
+"@jupyterlab/coreutils@^5.6.1":
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/@jupyterlab/coreutils/-/coreutils-5.6.1.tgz#da6c2fe28298ffcad09f1ec5ad4202bdaf1c07c8"
   integrity sha512-nS4ixC9H53lFzdszOfZfDhlM2hlXfOtQAn6TnA/0Ra/gTBQ+LEbFIWdAp588iKuv8eKX39O/Us53T4oq24A31g==
@@ -1569,6 +1569,22 @@
     "@lumino/polling" "^1.9.0"
     "@lumino/signaling" "^1.10.0"
     "@lumino/virtualdom" "^1.14.0"
+    "@lumino/widgets" "^1.37.1"
+    react "^17.0.1"
+
+"@jupyterlab/launcher@^3.6.1":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@jupyterlab/launcher/-/launcher-3.6.1.tgz#f525e04f9a341d633afd32d61db76594cc3027bb"
+  integrity sha512-DZFirXQei8jwR4LC5h6ezCqVfkkLjvXhUSLwX3Wtj4VcJ5ErTcXlZGQwqDECgEVMbdoXNcizMfSaUAM1JPsvmQ==
+  dependencies:
+    "@jupyterlab/apputils" "^3.6.1"
+    "@jupyterlab/translation" "^3.6.1"
+    "@jupyterlab/ui-components" "^3.6.1"
+    "@lumino/algorithm" "^1.9.0"
+    "@lumino/commands" "^1.19.0"
+    "@lumino/coreutils" "^1.11.0"
+    "@lumino/disposable" "^1.10.0"
+    "@lumino/properties" "^1.8.0"
     "@lumino/widgets" "^1.37.1"
     react "^17.0.1"
 
@@ -1670,7 +1686,7 @@
     lodash.escape "^4.0.1"
     marked "^4.0.17"
 
-"@jupyterlab/services@^6.1.0", "@jupyterlab/services@^6.6.1":
+"@jupyterlab/services@^6.6.1":
   version "6.6.1"
   resolved "https://registry.yarnpkg.com/@jupyterlab/services/-/services-6.6.1.tgz#5fd96574bb1eee2e4217a6d039b4dcdeb51bb66f"
   integrity sha512-4YIwTsfx7+JO7Lz9YFTpUvniA3aHdR5dDQJfdo9TsCMxs+NDVfjNAvp9VHa1xNJWYll4Ay31lYWbvuN/SI+KEA==
@@ -1688,7 +1704,7 @@
     node-fetch "^2.6.0"
     ws "^7.4.6"
 
-"@jupyterlab/settingregistry@^3.1.0", "@jupyterlab/settingregistry@^3.6.1":
+"@jupyterlab/settingregistry@^3.6.1":
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/@jupyterlab/settingregistry/-/settingregistry-3.6.1.tgz#cd04e64d598598950c64aa99e1fc8a2c962d8c31"
   integrity sha512-zNCYIK6/oWG6JnhmwRGE/Zvn5Xhj0kovcJgTlOSHGyIiHqLfJA9TzHZDNUDANqqxAg4+H9fYdh1+agi4XWGL8A==
