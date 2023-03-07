@@ -85,7 +85,7 @@ should match the version of the target system. We also install
 `jupyter-server-proxy`.
 
 ```bash
-mamba install -c conda-forge -c nodefaults jupyterlab=3.4.0 jupyter-server-proxy
+mamba install -c conda-forge -c nodefaults jupyterlab jupyter-server-proxy
 ```
 
 Also install some packaging and build tools:
@@ -106,13 +106,13 @@ Make sure, `xcube` environment is active:
 conda activate xcube
 ```
 
-Clone xcube JupyterLab extension repository next to the `xcube` source
+Clone Cate JupyterLab extension repository next to the `cate` source
 folder:
 
 ```bash
 cd ${projects}
-git clone https://github.com/dcs4cop/xcube-jl-ext.git
-cd xcube-jl-ext
+git clone https://github.com/CCI-Tools/cate-jl-ext.git
+cd cate-jl-ext
 ```
 
 Install the initial project dependencies and install the extension into 

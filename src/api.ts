@@ -29,7 +29,7 @@ export interface ServerStatus {
 }
 
 export function getUiUrl(serverUrl: string) {
-    return `${CATE_APP_URL}?serverUrl=${serverUrl}`;
+    return `${CATE_APP_URL}?serviceUrl=${serverUrl}`;
 }
 
 /**
