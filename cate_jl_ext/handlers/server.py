@@ -62,11 +62,11 @@ class ServerHandler(jupyter_server.base.handlers.APIHandler):
         #     )
 
         stdout, stderr = self.cate_server_output
-        print(80 * "#")
-        print(type(stdout), type(stderr))
-        print(stdout)
-        print(stderr)
-        print(80 * "#")
+        # print(80 * "#")
+        # print(type(stdout), type(stderr))
+        # print(stdout)
+        # print(stderr)
+        # print(80 * "#")
 
         # TODO (forman): include stdout + stderr
         returncode = process.poll()
@@ -88,8 +88,8 @@ class ServerHandler(jupyter_server.base.handlers.APIHandler):
             except psutil.NoSuchProcess:
                 server_state[attr] = default_value
 
-        import json
-        print(json.dumps(server_state, indent=2))
+        # import json
+        # print(json.dumps(server_state, indent=2))
 
         return server_state
 
