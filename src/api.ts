@@ -29,7 +29,7 @@ export interface ServerStatus {
 }
 
 export function getUiUrl(serverUrl: string) {
-    return `${CATE_APP_URL}?serviceUrl=${serverUrl}`;
+    return `${CATE_APP_URL}?serviceUrl=${encodeURIComponent(serverUrl)}`;
 }
 
 /**
@@ -57,9 +57,11 @@ export async function getServer(hasServerProxy: boolean,
     assertServerStateOk(serverState);
 
     const serverPort = serverState.port;
-    const serverUrl = hasServerProxy
+    const serverUrl = (hasServerProxy
+                       && settings.baseUrl.indexOf("localhost") == -1
+                       && settings.baseUrl.indexOf("127.0.0.1") == -1)
         ? `${settings.baseUrl}proxy/${serverPort}`
-        : `http://127.0.0.1:${serverPort}`;
+        : `http://localhost:${serverPort}`;
 
     const fetchServerInfo = async (): Promise<any> => {
         const serverState = await getServerState();
@@ -71,7 +73,7 @@ export async function getServer(hasServerProxy: boolean,
         return response.json();
     }
 
-    const serverResponse = await callUntil(fetchServerInfo, 3000, 10);
+    const serverResponse = await callUntil(fetchServerInfo, 10000, 10);
     console.info('Cate server response:', serverResponse);
 
     return {
