@@ -3,9 +3,8 @@ import { PageConfig } from '@jupyterlab/coreutils';
 import { ILauncher } from "@jupyterlab/launcher";
 import { ISettingRegistry } from "@jupyterlab/settingregistry";
 import { ServerConnection } from '@jupyterlab/services';
-import { ICommandPalette, MainAreaWidget, showErrorMessage, WidgetTracker } from "@jupyterlab/apputils";
-import { Widget } from "@lumino/widgets";
-import { getServer, getUiUrl, ServerStatus, setLabInfo } from './api';
+import { ICommandPalette, showErrorMessage } from "@jupyterlab/apputils";
+import { getServer, stopServer, getCateAppUrl, ServerStatus, setLabInfo } from './api';
 
 
 const ERROR_BOX_TITLE = "Cate JupyterLab Extension";
@@ -56,59 +55,45 @@ async function activate(
     }
 
 
-    let widget: MainAreaWidget | null = null;
-    let tracker: WidgetTracker<MainAreaWidget> | null = null;
-
     // Add an application command
     const commandID = "cate:openCateApp";
+
+    let cateAppWindow: Window | null = null;
 
     app.commands.addCommand(commandID, {
         label: "Cate App",
         iconClass: (args: any) => (args["isPalette"] ? "" : "cate-icon"),
         execute: async () => {
-            if (widget === null || widget.isDisposed) {
-                console.debug("Creating new JupyterLab widget cate-jl-ext");
 
-                let serverStatus: ServerStatus;
-                try {
-                    // TODO (forman): show indicator while starting server
-                    serverStatus = await getServer(hasServerProxy, serverSettings)
-                } catch (error) {
-                    console.error("Argh:", error);
-                    await showErrorMessage(ERROR_BOX_TITLE, error);
-                    return;
-                }
-
-                const serverUrl = serverStatus.url;
-
-                // Create a blank content widget inside a MainAreaWidget
-                const content = new Widget();
-                const iframe = document.createElement('iframe');
-                iframe.style.position = "absolute";
-                iframe.style.width = "100%";
-                iframe.style.height = "100%";
-                iframe.style.border = "none";
-                // iframe.src = "https://viewer.earthsystemdatalab.net/";
-                iframe.src = getUiUrl(serverUrl);
-                content.node.appendChild(iframe);
-
-                widget = new MainAreaWidget({content});
-                widget.id = "cate-app";
-                widget.title.label = "Cate App";
-                widget.title.closable = true;
+            let serverStatus: ServerStatus;
+            try {
+                // TODO (forman): show indicator while starting server
+                console.debug("Starting (or getting) server...");
+                serverStatus = await getServer(hasServerProxy, serverSettings)
+            } catch (error) {
+                console.error("Argh:", error);
+                await showErrorMessage(ERROR_BOX_TITLE, error);
+                return;
             }
-            if (tracker !== null && !tracker.has(widget)) {
-                // Track the state of the widget for later restoration
-                tracker.add(widget).then(() => {
-                    console.debug('JupyterLab widget cate-jl-ext stored!');
-                });
+
+            if (cateAppWindow !== null && !cateAppWindow.closed) {
+                cateAppWindow.focus();
+                return;
             }
-            if (!widget.isAttached) {
-                // Attach the widget to the main work area if it's not there
-                app.shell.add(widget, "main");
+
+            const serverUrl = serverStatus.url;
+            const cateAppUrl = getCateAppUrl(serverUrl);
+
+            console.debug(`Opening Cate App URL ${cateAppUrl}`);
+            cateAppWindow = window.open(cateAppUrl, '_blank');
+            if (cateAppWindow !== null) {
+                cateAppWindow.onclose = () => {
+                    stopServer(serverSettings).then(() => {
+                        console.debug("Stopping server...");
+                    });
+                };
+                cateAppWindow.focus();
             }
-            // Activate the widget
-            app.shell.activateById(widget.id);
         }
     });
 
@@ -126,19 +111,6 @@ async function activate(
             command: commandID,
             category: "Other",
             rank: 0
-        });
-    }
-
-    if (restorer !== null) {
-        // Track and restore the widget state
-        tracker = new WidgetTracker<MainAreaWidget>({
-            namespace: "cate"
-        });
-        restorer.restore(tracker, {
-            command: commandID,
-            name: () => "cate"
-        }).then(() => {
-            console.debug('JupyterLab widget cate-jl-ext restored!');
         });
     }
 

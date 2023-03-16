@@ -3,7 +3,8 @@ import { ServerConnection } from '@jupyterlab/services';
 import { callUntil, UnrecoverableError } from "./util";
 
 const API_NAMESPACE = "cate";
-const CATE_APP_URL = "https://cate.climate.esa.int/sa";
+// const CATE_APP_URL = "https://cate.climate.esa.int/sa";
+const CATE_APP_URL = "http://localhost:3000";
 
 export interface LabInfo {
     lab_url: string;
@@ -28,14 +29,15 @@ export interface ServerStatus {
     response: any;
 }
 
-export function getUiUrl(serverUrl: string) {
-    return `${CATE_APP_URL}?serviceUrl=${serverUrl}`;
+export function getCateAppUrl(serverUrl: string) {
+    return `${CATE_APP_URL}/sa?serviceUrl=${serverUrl}`;
 }
 
 /**
  * Set lab information.
  */
-export async function setLabInfo(settings: ServerConnection.ISettings): Promise<LabInfo> {
+export async function setLabInfo(settings: ServerConnection.ISettings):
+  Promise<LabInfo> {
     const request = {
         method: "PUT",
         headers: {
@@ -52,7 +54,8 @@ export async function setLabInfo(settings: ServerConnection.ISettings): Promise<
  * Start Cate server and return, once it is ready to serve.
  */
 export async function getServer(hasServerProxy: boolean,
-                                settings: ServerConnection.ISettings): Promise<ServerStatus> {
+                                settings: ServerConnection.ISettings):
+  Promise<ServerStatus> {
     const serverState = await startServer(settings);
     assertServerStateOk(serverState);
 
@@ -71,7 +74,10 @@ export async function getServer(hasServerProxy: boolean,
         return response.json();
     }
 
-    const serverResponse = await callUntil(fetchServerInfo, 3000, 10);
+    const serverResponse = await callUntil(
+      fetchServerInfo,
+      3000, 10
+    );
     console.info('Cate server response:', serverResponse);
 
     return {
@@ -108,14 +114,24 @@ function assertServerStateOk(serverState: ServerState) {
 /**
  * Start Cate server.
  */
-async function startServer(settings?: ServerConnection.ISettings): Promise<ServerState> {
+async function startServer(settings?: ServerConnection.ISettings):
+  Promise<ServerState> {
     return callAPI<ServerState>('server', {method: "PUT"}, settings);
+}
+
+/**
+ * Stop Cate server.
+ */
+export async function stopServer(settings?: ServerConnection.ISettings):
+  Promise<ServerState> {
+    return callAPI<ServerState>('server', {method: "DELETE"}, settings);
 }
 
 /**
  * Get Cate server state.
  */
-async function getServerState(settings?: ServerConnection.ISettings): Promise<ServerState> {
+async function getServerState(settings?: ServerConnection.ISettings):
+  Promise<ServerState> {
     return callAPI<ServerState>('server', {method: "GET"}, settings);
 }
 
@@ -154,7 +170,10 @@ export async function callAPI<T>(
     }
 
     if (!response.ok) {
-        throw new ServerConnection.ResponseError(response, data.message || data);
+        throw new ServerConnection.ResponseError(
+          response,
+          data.message || data
+        );
     }
 
     return data;
