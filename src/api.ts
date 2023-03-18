@@ -73,8 +73,9 @@ export async function getServer(hasServerProxy: boolean,
         return response.json();
     }
 
+    console.debug('Trying to connect to', serverUrl);
     const serverResponse = await callUntil(fetchServerInfo, 10000, 10);
-    console.info('Cate server response:', serverResponse);
+    console.debug('Cate server response:', serverResponse);
 
     return {
         url: serverUrl,
