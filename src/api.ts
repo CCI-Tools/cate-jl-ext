@@ -3,7 +3,6 @@ import { ServerConnection } from '@jupyterlab/services';
 import { callUntil, UnrecoverableError } from "./util";
 
 const API_NAMESPACE = "cate";
-const CATE_APP_URL = "https://cate.climate.esa.int/sa";
 
 export interface LabInfo {
     lab_url: string;
@@ -28,8 +27,9 @@ export interface ServerStatus {
     response: any;
 }
 
-export function getUiUrl(serverUrl: string) {
-    return `${CATE_APP_URL}?serviceUrl=${encodeURIComponent(serverUrl)}`;
+export function getCateAppUrl(serviceUrl: string) {
+    // return `${CATE_APP_URL}?serviceUrl=${encodeURIComponent(serviceUrl)}`;
+    return `${serviceUrl}/app/sa?serviceUrl=${serviceUrl}`;
 }
 
 /**

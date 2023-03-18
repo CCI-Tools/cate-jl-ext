@@ -5,7 +5,7 @@ import { ISettingRegistry } from "@jupyterlab/settingregistry";
 import { ServerConnection } from '@jupyterlab/services';
 import { ICommandPalette, MainAreaWidget, showErrorMessage, WidgetTracker } from "@jupyterlab/apputils";
 import { Widget } from "@lumino/widgets";
-import { getServer, getUiUrl, ServerStatus, setLabInfo } from './api';
+import { getServer, getCateAppUrl, ServerStatus, setLabInfo } from './api';
 
 
 const ERROR_BOX_TITLE = "Cate JupyterLab Extension";
@@ -79,7 +79,8 @@ async function activate(
                     return;
                 }
 
-                const serverUrl = serverStatus.url;
+                let cateAppUrl = getCateAppUrl(serverStatus.url);
+                console.debug("cateAppUrl:", cateAppUrl);
 
                 // Create a blank content widget inside a MainAreaWidget
                 const content = new Widget();
@@ -88,8 +89,7 @@ async function activate(
                 iframe.style.width = "100%";
                 iframe.style.height = "100%";
                 iframe.style.border = "none";
-                // iframe.src = "https://viewer.earthsystemdatalab.net/";
-                iframe.src = getUiUrl(serverUrl);
+                iframe.src = cateAppUrl;
                 content.node.appendChild(iframe);
 
                 widget = new MainAreaWidget({content});
