@@ -28,8 +28,7 @@ export interface ServerStatus {
 }
 
 export function getCateAppUrl(serviceUrl: string) {
-    // return `${CATE_APP_URL}?serviceUrl=${encodeURIComponent(serviceUrl)}`;
-    return `${serviceUrl}/app/sa?serviceUrl=${serviceUrl}`;
+    return `${serviceUrl}/app/?serviceUrl=${serviceUrl}`;
 }
 
 /**
