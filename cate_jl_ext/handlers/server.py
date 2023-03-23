@@ -1,3 +1,5 @@
+import json
+import os.path
 import subprocess
 import sys
 import threading
@@ -7,10 +9,7 @@ import jupyter_server.base.handlers
 import psutil
 import tornado.web
 
-from ..config import default_server_config
-from ..config import default_server_port
-from ..config import is_jupyter_server_proxy_enabled
-from ..config import server_config_file
+from ..config import default_server_port, lab_info_path, remote_lab_root
 from ..config import server_log_file
 
 CateServerInfo = Tuple[Optional[psutil.Popen], Optional[int], List[str]]
@@ -125,9 +124,20 @@ class ServerHandler(jupyter_server.base.handlers.APIHandler):
         if process is not None and process.is_running():
             return
 
-        if not server_config_file.exists():
-            with server_config_file.open("w") as f:
-                f.write(default_server_config)
+        # Assuming already run: PUT /cate/lab_info
+        if lab_info_path.exists():
+            with lab_info_path.open(mode="r") as f:
+                lab_info = json.load(f)
+            lab_url = lab_info["lab_url"]
+            is_local = any(lab_url.startswith(prefix)
+                            for prefix in ("http://localhost",
+                                           "http://127.0.0.1"))
+        else:
+            is_local = False
+
+        # if not server_config_file.exists():
+        #     with server_config_file.open("w") as f:
+        #         f.write(default_server_config)
 
         # TODO (forman): Get free port
         port = default_server_port
@@ -142,6 +152,8 @@ class ServerHandler(jupyter_server.base.handlers.APIHandler):
             "--verbose",
             "--traceback",
         ]
+        if not is_local and os.path.isdir(remote_lab_root):
+            cmdline.extend(["--root", remote_lab_root])
 
         self.log.info(f'Starting Cate Server: {cmdline}')
         try:
