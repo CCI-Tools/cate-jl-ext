@@ -12,6 +12,7 @@ lab_url_key = "lab_url"
 has_proxy_key = "has_proxy"
 
 remote_lab_root = "/home/jovyan"
+remote_workspaces_root = f"{remote_lab_root}/.cate/workspaces"
 
 server_info_file = data_path / "server-info.json"
 

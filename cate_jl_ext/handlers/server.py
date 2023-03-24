@@ -9,7 +9,10 @@ import jupyter_server.base.handlers
 import psutil
 import tornado.web
 
-from ..config import default_server_port, lab_info_path, remote_lab_root
+from ..config import default_server_port
+from ..config import lab_info_path
+from ..config import remote_lab_root
+from ..config import remote_workspaces_root
 from ..config import server_log_file
 
 CateServerInfo = Tuple[Optional[psutil.Popen], Optional[int], List[str]]
@@ -130,8 +133,8 @@ class ServerHandler(jupyter_server.base.handlers.APIHandler):
                 lab_info = json.load(f)
             lab_url = lab_info["lab_url"]
             is_local = any(lab_url.startswith(prefix)
-                            for prefix in ("http://localhost",
-                                           "http://127.0.0.1"))
+                           for prefix in ("http://localhost",
+                                          "http://127.0.0.1"))
         else:
             is_local = False
 
@@ -153,7 +156,7 @@ class ServerHandler(jupyter_server.base.handlers.APIHandler):
             "--traceback",
         ]
         if not is_local and os.path.isdir(remote_lab_root):
-            cmdline.extend(["--root", remote_lab_root])
+            cmdline.extend(["--root", remote_workspaces_root])
 
         self.log.info(f'Starting Cate Server: {cmdline}')
         try:
