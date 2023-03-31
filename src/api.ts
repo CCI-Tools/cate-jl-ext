@@ -85,10 +85,15 @@ export async function getServer(hasServerProxy: boolean,
 
 
 function assertServerStateOk(serverState: ServerState) {
-    if (serverState.status === "running" || serverState.status === "sleeping") {
+    console.debug("cate-jl-ext server state:", serverState);
+    if (serverState.status === "running") {
         return;  // Ok!
     }
-    console.debug("cate-jl-ext server state:", serverState);
+    if (serverState.status === "sleeping"
+        || serverState.status === "disk-sleep") {
+        console.warn("Cate server in sleeping state:", serverState);
+        return;  // Ok!
+    }
     let message = "Cate server could not be started or terminated unexpectedly. ";
     if (typeof serverState.stderr === "string") {
         message += `Message: ${serverState.stderr}. `;
