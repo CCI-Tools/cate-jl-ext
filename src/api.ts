@@ -91,7 +91,7 @@ function assertServerStateOk(serverState: ServerState) {
     }
     if (serverState.status === "sleeping"
         || serverState.status === "disk-sleep") {
-        console.warn("Cate server mode:", serverState);
+        console.warn("Cate server in sleeping state:", serverState);
         return;  // Ok!
     }
     let message = "Cate server could not be started or terminated unexpectedly. ";
