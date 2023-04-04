@@ -1,8 +1,8 @@
 import importlib.metadata
+import os
 from pathlib import Path
 
 import jupyter_core.paths
-
 
 # Note: as we are storing runtime information here, we should use
 #
@@ -12,6 +12,9 @@ lab_url_key = "lab_url"
 has_proxy_key = "has_proxy"
 
 remote_lab_root = "/home/jovyan"
+if os.environ.get("IS_JASMIN") == "1":
+    # Mountpoint for Cate's shared PVC
+    remote_lab_root += "/work"
 
 server_info_file = data_path / "server-info.json"
 
